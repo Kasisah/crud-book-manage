@@ -1,0 +1,36 @@
+<h2>Book Management</h2>
+
+{% if book %}
+  <h3>Update Price: {{ book.title }}</h3>
+  <form method="post">
+    {% csrf_token %}
+    <input name="price" type="number" value="{{ book.price }}" required>
+    <button type="submit">Update</button>
+  </form>
+  <a href="{% url 'book_list' %}">Cancel</a>
+{% else %}
+  <h3>Add Book</h3>
+  <form method="post">
+    {% csrf_token %}
+    <input name="title" placeholder="Title" required>
+    <input name="author" placeholder="Author" required>
+    <input name="price" type="number" placeholder="Price" required>
+    <button type="submit">Save</button>
+  </form>
+{% endif %}
+
+<h3>Book List</h3>
+<table border="1">
+  <tr><th>Title</th><th>Author</th><th>Price</th><th>Action</th></tr>
+  {% for b in books %}
+  <tr>
+    <td>{{ b.title }}</td>
+    <td>{{ b.author }}</td>
+    <td>{{ b.price }}</td>
+    <td>
+      <a href="{% url 'update_book' b.id %}">Update</a> |
+      <a href="{% url 'delete_book' b.id %}">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
